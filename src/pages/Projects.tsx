@@ -12,7 +12,8 @@ const Projects: React.FC = () => {
       image: '/homepage/ss1.png',
       description: 'Kargo takip ve yönetim sistemi',
       isActive: true,
-      route: '/projects/kargo-yonetim'
+      route: '/kargo-yonetim',
+      liveUrl: 'https://kargo-yonetim-app.pages.dev/'
     },
     {
       id: 'wite-website',
@@ -20,7 +21,8 @@ const Projects: React.FC = () => {
       image: '/homepage/ss2.png',
       description: 'Modern web tasarım projesi',
       isActive: true,
-      route: '/projects/wite-website'
+      route: '/wite-website',
+      liveUrl: 'https://www.wite.com.tr/'
     },
     {
       id: 'nami-landing',
@@ -28,7 +30,7 @@ const Projects: React.FC = () => {
       image: '/homepage/ss3.png',
       description: 'AI Chat landing page',
       isActive: false,
-      route: '/projects/nami-landing'
+      route: '/nami-landing'
     },
     {
       id: 'nami-ai',
@@ -36,7 +38,7 @@ const Projects: React.FC = () => {
       image: '/homepage/ss4.png',
       description: 'AI Chat uygulaması',
       isActive: false,
-      route: '/projects/nami-ai'
+      route: '/nami-ai'
     }
   ];
 
@@ -96,14 +98,17 @@ const Projects: React.FC = () => {
 
                   {/* Go to Project Button */}
                   {project.isActive ? (
-                  <button
-                    className="group inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-semibold rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-                  >
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-semibold rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                    >
                       {t('goToProjectBtn')}
                       <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                       </svg>
-                    </button>
+                    </a>
                   ) : (
                     <button
                       disabled
