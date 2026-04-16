@@ -1,0 +1,1958 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="pageTitle">Enes Faruk Gelik — Full Stack Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="icon" href="/public/logo192.png" type="image/png" />
+  <style>
+    /* ─── RESET & BASE ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* Wellgraf-benzeri ana palet (Ana Sayfa / Hakkımda ile uyumlu) */
+      --bg:        #030303;
+      --surface:   #0a0a0a;
+      --border:    rgba(255, 255, 255, .08);
+      --text:      #ececea;
+      --muted:     #8a8a8e;
+      --accent:    #c8ff5e;
+      --accent2:   #5effc8;
+      --sidebar-w: 240px;
+      --font-head: 'Syne', sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-sidebar: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      /* Wellgraf-benzeri yan panel (sadece .sidebar içinde kullanılır) */
+      --sidebar-bg:     #030303;
+      --sidebar-border: rgba(255, 255, 255, .07);
+      --sidebar-text:   #ececea;
+      --sidebar-muted:  #8a8a8e;
+      --ease:      cubic-bezier(.16,1,.3,1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #page-home,
+    #page-about {
+      font-family: var(--font-sidebar);
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    button { cursor: pointer; border: none; background: none; font: inherit; color: inherit; }
+
+    /* ─── LAYOUT ────────────────────────────────────────────── */
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ─── SIDEBAR ───────────────────────────────────────────── */
+    .sidebar {
+      width: var(--sidebar-w);
+      min-height: 100vh;
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--sidebar-border);
+      font-family: var(--font-sidebar);
+      color: var(--sidebar-text);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0; left: 0;
+      z-index: 100;
+      padding: 28px 0;
+      transition: transform .3s var(--ease);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .sidebar-logo {
+      padding: 8px 20px 12px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .sidebar-logo-link {
+      display: block;
+      line-height: 0;
+      outline: none;
+    }
+
+    .sidebar-logo-link:focus-visible {
+      border-radius: 8px;
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, .25);
+    }
+
+    .sidebar-logo-link img {
+      width: auto;
+      max-width: 88px;
+      height: auto;
+      display: block;
+      object-fit: contain;
+    }
+
+    /* Profile card */
+    .sidebar-profile {
+      padding: 28px 28px 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sidebar-avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .06);
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 1px solid rgba(255, 255, 255, .12);
+    }
+
+    .sidebar-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .sidebar-avatar-photo {
+      padding: 0;
+      border: none;
+      background: transparent;
+    }
+    .sidebar-profile-after-lang {
+      padding: 12px 20px 8px;
+      border-top: none;
+      margin-top: 0;
+      margin-bottom: 0;
+      justify-content: center;
+    }
+    .sidebar-profile-after-lang .sidebar-avatar {
+      margin-bottom: 14px;
+    }
+    .sidebar-profile-after-lang .sidebar-profile-name {
+      font-size: 13px;
+    }
+
+    .sidebar-avatar-placeholder {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, #2a2a2c, #1a1a1c);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-sidebar);
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--accent);
+    }
+
+    .sidebar-profile-info { min-width: 0; }
+    .sidebar-profile-name {
+      font-family: var(--font-sidebar);
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: .01em;
+      color: var(--sidebar-text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .sidebar-profile-sub {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--sidebar-muted);
+    }
+
+    /* Status dot */
+    .status-dot {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--sidebar-muted);
+      margin-top: 2px;
+    }
+
+    .status-dot::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .5; transform: scale(.8); }
+    }
+
+    /* Alt blok: dil + profil + sosyal — alta yapışır; menü ortada kalır */
+    .sidebar-bottom {
+      margin-top: auto;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Nav — logo ile alt blok arasındaki alanda dikey ortalı */
+    .sidebar-nav {
+      flex: 1 1 auto;
+      min-height: 0;
+      padding: 8px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .sidebar .nav-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: var(--sidebar-muted);
+      background: transparent;
+      transition: color .2s, font-weight .15s;
+      cursor: pointer;
+    }
+
+    .sidebar .nav-link:hover {
+      color: var(--sidebar-text);
+      background: rgba(255, 255, 255, .04);
+    }
+
+    .sidebar .nav-link.active {
+      color: var(--sidebar-text);
+      background: transparent;
+      font-weight: 700;
+    }
+
+    .sidebar .nav-link.active:hover {
+      background: transparent;
+    }
+
+    /* Social links */
+    .sidebar-socials {
+      padding: 8px 20px 12px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      border-top: none;
+    }
+
+    .sidebar .social-link {
+      width: 32px; height: 32px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, .05);
+      border: 1px solid rgba(255, 255, 255, .06);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--sidebar-muted);
+      transition: color .2s, background .2s, border-color .2s;
+      font-size: 13px;
+    }
+
+    .sidebar .social-link:hover {
+      background: rgba(255, 255, 255, .08);
+      border-color: rgba(255, 255, 255, .12);
+      color: var(--sidebar-text);
+    }
+
+    .social-link svg { width: 14px; height: 14px; }
+
+    /* ─── MAIN CONTENT ──────────────────────────────────────── */
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      min-height: 100vh;
+    }
+
+    /* ─── PAGE SYSTEM ───────────────────────────────────────── */
+    .page { display: none; animation: fadeIn .4s var(--ease); }
+    .page.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── HOME PAGE ─────────────────────────────────────────── */
+    .home-hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 80px 80px 72px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .home-hero::before {
+      content: '';
+      position: absolute;
+      top: -20%; right: -10%;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(255,255,255,.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .home-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: rgba(255, 255, 255, .03);
+      border: 1px solid rgba(255, 255, 255, .1);
+      border-radius: 100px;
+      padding: 6px 14px;
+      margin-bottom: 40px;
+      width: fit-content;
+    }
+
+    .home-title {
+      font-family: var(--font-sidebar);
+      font-size: clamp(44px, 6.5vw, 88px);
+      font-weight: 600;
+      line-height: .98;
+      letter-spacing: -0.035em;
+      margin-bottom: 32px;
+      color: var(--text);
+    }
+
+    .home-title .line { display: block; overflow: hidden; }
+    .home-title .line-inner {
+      display: block;
+      animation: slideUp .7s var(--ease) both;
+    }
+
+    .home-title .line:nth-child(2) .line-inner { animation-delay: .1s; }
+    .home-title .line:nth-child(3) .line-inner { animation-delay: .18s; }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to   { transform: translateY(0); }
+    }
+
+    .home-title .accent-word {
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .home-desc {
+      font-size: clamp(15px, 1.2vw, 17px);
+      font-weight: 400;
+      color: var(--muted);
+      max-width: min(44ch, 100%);
+      line-height: 1.7;
+      margin-bottom: 48px;
+      animation: fadeIn .6s .3s var(--ease) both;
+    }
+
+    .home-ctas {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      animation: fadeIn .6s .4s var(--ease) both;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #0a0a0a;
+      font-family: var(--font-sidebar);
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 14px 28px;
+      border-radius: 100px;
+      transition: all .2s;
+    }
+
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(200,255,94,.25); }
+
+    .btn-primary svg { width: 14px; height: 14px; }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(255, 255, 255, .14);
+      color: var(--text);
+      font-family: var(--font-sidebar);
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 14px 28px;
+      border-radius: 100px;
+      transition: all .2s;
+    }
+
+    .btn-outline:hover {
+      border-color: rgba(255, 255, 255, .35);
+      color: var(--text);
+      transform: translateY(-2px);
+    }
+
+    /* Projects mini-grid on home */
+    .home-projects-section {
+      padding: 0 72px 80px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 40px;
+    }
+
+    .section-title {
+      font-family: var(--font-sidebar);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .section-link {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: gap .2s;
+    }
+
+    .section-link:hover { gap: 10px; color: var(--text); opacity: .85; }
+
+    .home-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .home-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all .3s var(--ease);
+      cursor: pointer;
+    }
+
+    .home-card:hover {
+      border-color: rgba(255, 255, 255, .14);
+      transform: translateY(-4px);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, .45);
+    }
+
+    .home-card-img {
+      aspect-ratio: 16 / 9;
+      background: #080808;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .home-card-img img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      max-width: none;
+      object-fit: contain;
+      object-position: center;
+      transition: transform .6s var(--ease);
+    }
+
+    .home-card:hover .home-card-img img { transform: scale(1.03); }
+
+    .home-card-img-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-sidebar);
+      font-size: 32px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, .12);
+    }
+
+    .home-card-body {
+      padding: 20px 24px;
+    }
+
+    .home-card-chips {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .chip {
+      font-size: 10px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, .06);
+      background: rgba(255, 255, 255, .04);
+      color: var(--muted);
+    }
+
+    .chip-active {
+      background: rgba(255, 255, 255, .08);
+      color: var(--text);
+      border: 1px solid rgba(255, 255, 255, .1);
+    }
+
+    .home-card-name {
+      font-family: var(--font-sidebar);
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+
+    .home-card-desc {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--muted);
+    }
+
+    /* ─── WORK PAGE (Wellgraf-style: yumuşak köşeler + görsel ağırlıklı grid) ─ */
+    #page-work {
+      --wk-fg: #ececea;
+      --wk-muted: #8a8a8c;
+      --wk-line: rgba(255,255,255,.08);
+      --wk-card: #070707;
+      --wk-ghost: rgba(255,255,255,.14);
+      --wk-glow: rgba(255,255,255,.04);
+      --wg-r-sm: clamp(10px, 1.2vw, 14px);
+      --wg-r-md: clamp(14px, 1.8vw, 20px);
+      --wg-r-lg: clamp(18px, 2.4vw, 28px);
+      --wg-r-xl: clamp(20px, 3vw, 36px);
+      position: relative;
+      overflow-x: clip;
+      background: #020202;
+      color: var(--wk-fg);
+      counter-reset: wgproj;
+    }
+
+    #page-work::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 100% 80% at 50% -20%, var(--wk-glow) 0%, transparent 50%),
+        linear-gradient(180deg, rgba(255,255,255,.02) 0%, transparent 28%);
+      z-index: 0;
+    }
+
+    #page-work::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.055;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      z-index: 0;
+    }
+
+    #page-work > * { position: relative; z-index: 1; }
+
+    #page-work .wg-hero {
+      padding: clamp(48px, 9vh, 100px) clamp(24px, 6vw, 96px) clamp(32px, 5vh, 56px);
+      position: relative;
+    }
+
+    #page-work .wg-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 20% 0%, rgba(255,255,255,.07) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    #page-work .wg-hero__kicker {
+      font-size: 11px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--wk-muted);
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    #page-work .wg-hero__title {
+      font-family: var(--font-head);
+      font-size: clamp(44px, 8vw, 96px);
+      font-weight: 800;
+      line-height: .95;
+      letter-spacing: -.03em;
+      margin-bottom: 28px;
+      position: relative;
+    }
+
+    #page-work .wg-hero__sub {
+      font-size: clamp(15px, 1.35vw, 19px);
+      color: var(--wk-muted);
+      max-width: min(44ch, 100%);
+      line-height: 1.7;
+      font-weight: 400;
+      position: relative;
+    }
+
+    #page-work article.wg-showcase {
+      counter-increment: wgproj;
+      display: grid;
+      grid-template-columns: minmax(220px, 0.30fr) minmax(0, 1.22fr);
+      gap: clamp(32px, 5vw, 88px);
+      align-items: start;
+      padding: clamp(48px, 7vh, 112px) clamp(24px, 6vw, 96px);
+      position: relative;
+      isolation: isolate;
+    }
+
+    @media (min-width: 901px) {
+      #page-work article.wg-showcase {
+        align-items: center;
+      }
+    }
+
+    #page-work article.wg-showcase::before {
+      content: counter(wgproj, decimal-leading-zero);
+      position: absolute;
+      top: clamp(16px, 3vh, 40px);
+      right: clamp(12px, 3vw, 40px);
+      font-family: var(--font-head);
+      font-size: clamp(64px, 12vw, 140px);
+      font-weight: 800;
+      line-height: 1;
+      color: rgba(255,255,255,.028);
+      letter-spacing: -.06em;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Zigzag: çift satırlarda medya SOLDA ama yine GENİŞ sütunda olsun (order tek başına medyayı dar sütuna taşıyordu) */
+    #page-work article.wg-showcase:nth-of-type(2n) {
+      grid-template-columns: minmax(0, 1.22fr) minmax(220px, 0.30fr);
+    }
+
+    #page-work article.wg-showcase:nth-of-type(2n) .wg-showcase__content { order: 2; }
+    #page-work article.wg-showcase:nth-of-type(2n) .wg-showcase__media { order: 1; }
+
+    #page-work .wg-showcase__content {
+      min-width: 0;
+      position: relative;
+      z-index: 2;
+      max-width: min(34rem, 100%);
+      padding-top: 0.25rem;
+      padding-bottom: 0.25rem;
+    }
+
+    #page-work .wg-showcase__media {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      min-width: 0;
+    }
+
+    #page-work .wg-meta {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    #page-work .wg-index {
+      font-size: 11px;
+      letter-spacing: .14em;
+      color: var(--wk-muted);
+      text-transform: uppercase;
+    }
+
+    #page-work .wg-status {
+      font-size: 10px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.18);
+      color: var(--wk-fg);
+      background: rgba(255,255,255,.04);
+    }
+
+    #page-work .wg-status.is-muted {
+      color: var(--wk-muted);
+      border-color: var(--wk-ghost);
+    }
+
+    #page-work .wg-showcase__title {
+      font-family: var(--font-head);
+      font-size: clamp(30px, 4vw, 52px);
+      font-weight: 800;
+      letter-spacing: -.035em;
+      line-height: 1.04;
+      margin-bottom: 16px;
+    }
+
+    #page-work .wg-showcase__desc {
+      font-size: 14px;
+      color: var(--wk-muted);
+      line-height: 1.68;
+      margin-bottom: 20px;
+      max-width: 38ch;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 5;
+      overflow: hidden;
+    }
+
+    #page-work .wg-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+      align-content: flex-start;
+    }
+
+    #page-work .wg-tag {
+      font-size: 9px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.1);
+      color: var(--wk-muted);
+      background: rgba(255,255,255,.035);
+    }
+
+    #page-work .wg-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      overflow: visible;
+      margin-bottom: 22px;
+      width: 100%;
+      max-width: min(320px, 100%);
+    }
+
+    #page-work .wg-stat {
+      background: rgba(255,255,255,.03);
+      padding: 12px 8px;
+      text-align: center;
+      border-radius: var(--wg-r-md);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    #page-work .wg-stat__val {
+      font-family: var(--font-head);
+      font-size: clamp(14px, 2.5vw, 17px);
+      font-weight: 800;
+      line-height: 1.15;
+      word-break: break-word;
+    }
+
+    #page-work .wg-stat__lbl {
+      font-size: 8px;
+      color: var(--wk-muted);
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      margin-top: 3px;
+      line-height: 1.25;
+    }
+
+    #page-work .wg-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+
+    #page-work .btn-wg-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      color: #0a0a0a;
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 12px 22px;
+      border-radius: 999px;
+      transition: transform .2s var(--ease), box-shadow .2s;
+    }
+
+    #page-work .btn-wg-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 40px rgba(255,255,255,.12);
+    }
+
+    #page-work .btn-wg-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--wk-ghost);
+      color: var(--wk-fg);
+      font-family: var(--font-head);
+      font-weight: 600;
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 12px 22px;
+      border-radius: 999px;
+      transition: border-color .2s, background .2s;
+    }
+
+    #page-work .btn-wg-ghost:hover {
+      border-color: #fff;
+      background: rgba(255,255,255,.06);
+    }
+
+    #page-work .btn-wg-disabled {
+      display: inline-flex;
+      align-items: center;
+      padding: 12px 22px;
+      border-radius: 999px;
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--wk-muted);
+      border: 1px dashed var(--wk-line);
+      cursor: not-allowed;
+      opacity: .65;
+    }
+
+    #page-work .wg-media {
+      position: relative;
+      border-radius: var(--wg-r-lg);
+      overflow: hidden;
+      width: 100%;
+      height: clamp(360px, min(56vh, 620px), 680px);
+      background: #050506;
+      border: 1px solid rgba(255,255,255,.09);
+      box-shadow:
+        0 1px 0 rgba(255,255,255,.06) inset,
+        0 28px 80px -32px rgba(0,0,0,.85);
+    }
+
+    @media (max-width: 900px) {
+      #page-work .wg-media {
+        height: clamp(280px, min(48vh, 520px), 560px);
+        border-radius: var(--wg-r-md);
+      }
+    }
+
+    #page-work .wg-media--static .wg-media__img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      border-radius: inherit;
+      transition: transform 1.1s var(--ease);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      #page-work .wg-showcase:hover .wg-media--static .wg-media__img {
+        transform: scale(1.03);
+      }
+    }
+
+    #page-work .wg-media--video {
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    #page-work .wg-media--video:focus-visible {
+      outline: 2px solid rgba(255,255,255,.5);
+      outline-offset: 3px;
+    }
+
+    #page-work .wg-media__poster {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      z-index: 2;
+      transition: opacity 0.45s cubic-bezier(.25, .8, .25, 1);
+      pointer-events: none;
+    }
+
+    #page-work .wg-media--video.is-playing .wg-media__poster {
+      opacity: 0;
+    }
+
+    #page-work .wg-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      display: block;
+      z-index: 1;
+    }
+
+    #page-work .wg-media__hint {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: #fafafa;
+      background: rgba(0,0,0,.52);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,.14);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    #page-work .wg-media__hint::before {
+      content: '';
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 5px 0 5px 7px;
+      border-color: transparent transparent transparent rgba(255,255,255,.92);
+    }
+
+    #page-work .wg-media--video.is-playing .wg-media__hint {
+      opacity: 0;
+      transform: translateX(-50%) translateY(8px);
+    }
+
+    #page-work .wg-media--video::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      pointer-events: none;
+      border-radius: inherit;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #page-work::after { opacity: 0.02; }
+      #page-work .wg-media__poster { transition: none; }
+      #page-work .wg-media__hint { transition: none; }
+      #page-work .wg-showcase__desc { -webkit-line-clamp: 8; }
+    }
+
+    #page-work .wg-media__fallback {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 10px;
+      background: linear-gradient(145deg, #0c0c0c, #141416);
+      color: var(--wk-muted);
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    #page-work .wg-media__fb-icon {
+      font-family: var(--font-head);
+      font-size: 40px;
+      font-weight: 800;
+      color: rgba(255,255,255,.08);
+    }
+
+    /* ─── ABOUT (Wellgraf tipografisi: Inter + nötr) ─────────── */
+    #page-about {
+      font-family: var(--font-sidebar);
+      color: var(--text);
+    }
+
+    .about-section {
+      padding: 72px 72px 80px;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 48px;
+    }
+
+    .about-hero-head {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .about-hero-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid rgba(255, 255, 255, .12);
+    }
+
+    .about-hero-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .about-hero-name {
+      font-family: var(--font-sidebar);
+      font-weight: 600;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .about-contact-block {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .about-contact-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .about-contact-row svg {
+      flex-shrink: 0;
+    }
+
+    .about-contact-row svg path,
+    .about-contact-row svg circle,
+    .about-contact-row svg rect,
+    .about-contact-row svg polyline {
+      stroke: rgba(255, 255, 255, .34);
+      fill: none;
+    }
+
+    .about-right-col {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .about-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .about-card__label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .about-card__row {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .about-card__logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, .06);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .about-card__logo--edu {
+      width: 48px;
+      height: 48px;
+      padding: 4px;
+    }
+
+    .about-card__logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .about-card__logo--edu img {
+      object-fit: contain;
+    }
+
+    .about-card__title {
+      font-family: var(--font-sidebar);
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+
+    .about-card__accent {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .about-card__meta {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .about-card__body {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 8px;
+      line-height: 1.6;
+    }
+
+    .about-github-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 24px;
+      transition: background .2s, border-color .2s;
+    }
+
+    .about-github-card:hover {
+      background: rgba(255, 255, 255, .06);
+      border-color: rgba(255, 255, 255, .12);
+    }
+
+    .about-github-card__title {
+      font-family: var(--font-sidebar);
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .about-github-card__sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .about-github-card svg {
+      flex-shrink: 0;
+    }
+
+    .about-github-card svg path {
+      stroke: rgba(255, 255, 255, .45);
+      fill: none;
+    }
+
+    .about-title {
+      font-family: var(--font-sidebar);
+      font-size: clamp(36px, 4vw, 56px);
+      font-weight: 600;
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+      margin-bottom: 24px;
+      color: var(--text);
+    }
+
+    .about-title em {
+      font-style: italic;
+      color: var(--text);
+      opacity: .9;
+    }
+
+    .about-body {
+      font-size: clamp(15px, 1.15vw, 17px);
+      font-weight: 400;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 40px;
+      max-width: min(52ch, 100%);
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .skill-pill {
+      background: rgba(255, 255, 255, .03);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 500;
+      text-align: center;
+      color: var(--muted);
+      transition: border-color .2s, color .2s, background .2s;
+    }
+
+    .skill-pill:hover {
+      border-color: rgba(255, 255, 255, .16);
+      color: var(--text);
+      background: rgba(255, 255, 255, .04);
+    }
+
+    .about-skills-block {
+      margin-top: 40px;
+    }
+
+    .about-skills-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    /* ─── MOBILE TOGGLE ─────────────────────────────────────── */
+    .mobile-toggle {
+      display: none;
+      position: fixed;
+      top: 16px; left: 16px;
+      z-index: 200;
+      width: 40px; height: 40px;
+      background: var(--sidebar-bg);
+      border: 1px solid var(--sidebar-border);
+      border-radius: 8px;
+      color: var(--sidebar-text);
+      align-items: center; justify-content: center;
+    }
+
+    .mobile-toggle svg { width: 18px; height: 18px; }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      :root { --sidebar-w: 0px; }
+
+      .sidebar {
+        width: 240px;
+        transform: translateX(-100%);
+      }
+
+      .sidebar.open { transform: translateX(0); }
+
+      .main { margin-left: 0; }
+
+      .mobile-toggle { display: flex; }
+
+      .home-hero {
+        padding: 80px 24px 60px;
+      }
+
+      .home-projects-section { padding: 0 24px 60px; }
+
+      .home-grid { grid-template-columns: 1fr; }
+
+      #page-work .wg-hero { padding: 44px 20px 32px; }
+      #page-work article.wg-showcase,
+      #page-work article.wg-showcase:nth-of-type(2n) {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        padding: 40px 20px;
+        align-items: start;
+      }
+      #page-work article.wg-showcase:nth-of-type(2n) .wg-showcase__content,
+      #page-work article.wg-showcase:nth-of-type(2n) .wg-showcase__media {
+        order: unset;
+      }
+
+      .about-section { padding: 48px 24px 60px; }
+      .about-grid { grid-template-columns: 1fr; }
+    }
+
+    .lang-switch {
+      display: flex;
+      gap: 8px;
+      padding: 4px 20px 24px;
+      margin-top: 0;
+    }
+    .sidebar .lang-btn {
+      flex: 1;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-family: var(--font-sidebar);
+      border: 1px solid rgba(255, 255, 255, .1);
+      background: rgba(255, 255, 255, .03);
+      color: var(--sidebar-muted);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      transition: color .2s, border-color .2s, background .2s, font-weight .15s;
+    }
+    .sidebar .lang-btn:hover {
+      color: var(--sidebar-text);
+      border-color: rgba(255, 255, 255, .2);
+      background: rgba(255, 255, 255, .05);
+    }
+    .sidebar .lang-btn.lang-btn--active {
+      color: var(--sidebar-text);
+      font-weight: 700;
+      border-color: rgba(255, 255, 255, .1);
+      background: rgba(255, 255, 255, .03);
+    }
+    .sidebar .lang-btn.lang-btn--active:hover {
+      border-color: rgba(255, 255, 255, .1);
+      background: rgba(255, 255, 255, .03);
+      color: var(--sidebar-text);
+    }
+  </style>
+</head>
+<body>
+
+<!-- Mobile toggle -->
+<button class="mobile-toggle" id="mobileToggle" aria-label="Menü">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <line x1="3" y1="6" x2="21" y2="6"/>
+    <line x1="3" y1="12" x2="21" y2="12"/>
+    <line x1="3" y1="18" x2="21" y2="18"/>
+  </svg>
+</button>
+
+<div class="layout">
+
+  <!-- ═══ SIDEBAR ══════════════════════════════════════════════ -->
+  <aside class="sidebar" id="sidebar">
+
+    <!-- Logo -->
+    <div class="sidebar-logo">
+      <a href="#" class="sidebar-logo-link" onclick="showPage('home'); return false;" aria-label="Ana Sayfa">
+        <img src="/public/about/eneslogo-Photoroom.png" alt="" decoding="async" />
+      </a>
+    </div>
+
+    <!-- Nav -->
+    <nav class="sidebar-nav">
+      <a class="nav-link active" data-page="home" onclick="showPage('home')">
+        <span data-i18n="home">Ana Sayfa</span>
+      </a>
+
+      <a class="nav-link" data-page="work" onclick="showPage('work')">
+        <span data-i18n="uiNavWork">Projeler</span>
+      </a>
+
+      <a class="nav-link" data-page="about" onclick="showPage('about')">
+        <span data-i18n="about">Hakkımda</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="sidebar-profile sidebar-profile-after-lang">
+        <div class="sidebar-avatar sidebar-avatar-photo">
+          <img src="/public/about/enesvesika.jpeg" data-i18n-alt="aboutName" alt="Enes Faruk Gelik" onerror="this.parentElement.innerHTML='<div class=\'sidebar-avatar-placeholder\'>EG</div>'" />
+        </div>
+        <div class="sidebar-profile-info">
+          <div class="sidebar-profile-name" data-i18n="aboutName">Enes Faruk Gelik</div>
+        </div>
+      </div>
+
+      <div class="sidebar-socials">
+        <a class="social-link" href="https://github.com/EnesFarukGelik" target="_blank" title="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+        </a>
+        <a class="social-link" href="https://linkedin.com/in/enesfarukgelik" target="_blank" title="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+          </svg>
+        </a>
+        <a class="social-link" href="mailto:enesgelik1@gmail.com" title="Email">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="lang-switch" role="group" aria-label="Dil">
+        <button type="button" class="lang-btn lang-btn--active" data-lang="tr">TR</button>
+        <button type="button" class="lang-btn" data-lang="en">EN</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══ MAIN ═══════════════════════════════════════════════ -->
+  <main class="main">
+
+    <!-- ─── HOME ───────────────────────────────────────────── -->
+    <div class="page active" id="page-home">
+
+      <section class="home-hero">
+        <div class="home-tag">
+          <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
+          <span data-i18n="uiHeroTag">Full Stack Developer · İstanbul</span>
+        </div>
+
+        <h1 class="home-title">
+          <span class="line"><span class="line-inner" data-i18n="welcome">Merhaba, Ben</span></span>
+          <span class="line"><span class="line-inner accent-word" data-i18n="name">Enes Gelik</span></span>
+          <span class="line"><span class="line-inner" data-i18n="title">Full Stack Developer</span></span>
+        </h1>
+
+        <p class="home-desc" data-i18n="description">
+          Modern web teknolojileri ile yaratıcı çözümler geliştiriyorum.
+        </p>
+
+        <div class="home-ctas">
+          <a class="btn-primary" onclick="showPage('work')">
+            <span data-i18n="viewProjects">Projelerimi Gör</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+          <a class="btn-outline" onclick="showPage('about')">
+            <span data-i18n="about">Hakkımda</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Mini project grid -->
+      <section class="home-projects-section">
+        <div class="section-header">
+          <span class="section-title" data-i18n="uiHomeRecent">Son Projeler</span>
+          <a class="section-link" onclick="showPage('work')">
+            <span data-i18n="uiSeeAll">Tümünü Gör</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+
+        <div class="home-grid">
+
+          <!-- Card 1 -->
+          <div class="home-card" onclick="showPage('work')">
+            <div class="home-card-img">
+              <img src="/public/homepage/ss1.png" data-i18n-alt="kargoTitle" alt="Kargo Yönetim App" onerror="this.parentElement.innerHTML='<div class=home-card-img-placeholder>KY</div>'">
+            </div>
+            <div class="home-card-body">
+              <div class="home-card-chips">
+                <span class="chip">React</span>
+                <span class="chip">Node.js</span>
+                <span class="chip">MySQL</span>
+                <span class="chip chip-active" data-i18n="uiChipLive">Canlı</span>
+              </div>
+              <div class="home-card-name" data-i18n="kargoTitle">Kargo Yönetim App</div>
+              <div class="home-card-desc" data-i18n="homeCardDescKargo">Kargo takip ve yönetim sistemi</div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="home-card" onclick="showPage('work')">
+            <div class="home-card-img">
+              <img src="/public/homepage/ss2.png" data-i18n-alt="witeTitle" alt="Wite Website" onerror="this.parentElement.innerHTML='<div class=home-card-img-placeholder>WW</div>'">
+            </div>
+            <div class="home-card-body">
+              <div class="home-card-chips">
+                <span class="chip">React</span>
+                <span class="chip">TypeScript</span>
+                <span class="chip">Tailwind</span>
+                <span class="chip chip-active" data-i18n="uiChipLive">Canlı</span>
+              </div>
+              <div class="home-card-name" data-i18n="witeTitle">Wite Website</div>
+              <div class="home-card-desc" data-i18n="homeCardDescWite">Modern web tasarım projesi</div>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="home-card" onclick="showPage('work')">
+            <div class="home-card-img">
+              <img src="/public/homepage/ss3.png" data-i18n-alt="namiLandingTitle" alt="Nami Landing" onerror="this.parentElement.innerHTML='<div class=home-card-img-placeholder>NL</div>'">
+            </div>
+            <div class="home-card-body">
+              <div class="home-card-chips">
+                <span class="chip">Next.js</span>
+                <span class="chip">Framer Motion</span>
+                <span class="chip">TypeScript</span>
+              </div>
+              <div class="home-card-name" data-i18n="namiLandingTitle">Nami Landing Page</div>
+              <div class="home-card-desc" data-i18n="homeCardDescNamiL">AI Chat landing page</div>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="home-card" onclick="showPage('work')">
+            <div class="home-card-img">
+              <img src="/public/homepage/ss4.png" data-i18n-alt="namiAITitle" alt="Nami AI" onerror="this.parentElement.innerHTML='<div class=home-card-img-placeholder>AI</div>'">
+            </div>
+            <div class="home-card-body">
+              <div class="home-card-chips">
+                <span class="chip">Flutter</span>
+                <span class="chip">Firebase</span>
+                <span class="chip">OpenAI</span>
+              </div>
+              <div class="home-card-name" data-i18n="namiAITitle">Nami AI Chat</div>
+              <div class="home-card-desc" data-i18n="homeCardDescNamiAI">AI Chat uygulaması</div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </div><!-- /page-home -->
+
+
+    <!-- ─── WORK (Wellgraf-inspired) ────────────────────────── -->
+    <div class="page" id="page-work">
+
+      <header class="wg-hero">
+        <p class="wg-hero__kicker" data-i18n="wgWorkKicker">Seçilmiş işler</p>
+        <h1 class="wg-hero__title"><span data-i18n="workHeroLine1">Geliştirdiğim</span><br><span data-i18n="workHeroLine2">İşler</span></h1>
+        <p class="wg-hero__sub" data-i18n="uiWorkIntro">Her proje, bir problemi çözme ve yeni teknolojileri öğrenme fırsatı olmuştur.</p>
+      </header>
+
+      <!-- Project 1: Kargo -->
+      <article class="wg-showcase">
+        <div class="wg-showcase__content">
+          <div class="wg-meta">
+            <span class="wg-index">01 / 04</span>
+            <span class="wg-status" data-i18n="uiLiveStatus">Canlı</span>
+          </div>
+          <h2 class="wg-showcase__title" data-i18n="kargoTitle">Kargo Yönetim App</h2>
+          <p class="wg-showcase__desc" data-i18n="kargoAboutText">
+            Kargo Yönetim Uygulaması, stajımın başlangıç döneminde geliştirdiğim ilk projedir.
+          </p>
+          <div class="wg-stack">
+            <span class="wg-tag">React</span>
+            <span class="wg-tag">Node.js</span>
+            <span class="wg-tag">.NET</span>
+            <span class="wg-tag">MySQL</span>
+            <span class="wg-tag">CSS</span>
+          </div>
+          <div class="wg-stats">
+            <div class="wg-stat">
+              <div class="wg-stat__val">4</div>
+              <div class="wg-stat__lbl" data-i18n="uiDetailRole">Rol</div>
+            </div>
+            <div class="wg-stat">
+              <div class="wg-stat__val">JS</div>
+              <div class="wg-stat__lbl">58.8%</div>
+            </div>
+            <div class="wg-stat">
+              <div class="wg-stat__val">↗</div>
+              <div class="wg-stat__lbl" data-i18n="uiLiveStatus">Canlı</div>
+            </div>
+          </div>
+          <div class="wg-actions">
+            <a href="https://kargo-yonetim-app.pages.dev/" target="_blank" rel="noopener noreferrer" class="btn-wg-primary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14">
+                <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+                <polyline points="15,3 21,3 21,9"/>
+                <line x1="10" y1="14" x2="21" y2="3"/>
+              </svg>
+              <span data-i18n="kargoDemoBtn">Canlı Demo</span>
+            </a>
+            <a href="https://github.com/EnesFarukGelik/Kargo-Yonetim-app" target="_blank" rel="noopener noreferrer" class="btn-wg-ghost">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+              </svg>
+              <span data-i18n="kargoGitHub">GitHub</span>
+            </a>
+          </div>
+        </div>
+        <div class="wg-showcase__media">
+          <div class="wg-media wg-media--static">
+            <img class="wg-media__img" src="/public/homepage/ss1.png" data-i18n-alt="kargoTitle" alt="Kargo Yönetim App" onerror="this.parentElement.innerHTML='<div class=wg-media__fallback><span class=wg-media__fb-icon>KY</span>Kargo</div>'">
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 2: Wite -->
+      <article class="wg-showcase">
+        <div class="wg-showcase__content">
+          <div class="wg-meta">
+            <span class="wg-index">02 / 04</span>
+            <span class="wg-status" data-i18n="uiLiveStatus">Canlı</span>
+          </div>
+          <h2 class="wg-showcase__title" data-i18n="witeTitle">Wite Website</h2>
+          <p class="wg-showcase__desc" data-i18n="witeAboutText">
+            Wite Website, Wite firmasını tanıtmak amacıyla geliştirilmiş kullanıcı dostu bir web sitesidir.
+          </p>
+          <div class="wg-stack">
+            <span class="wg-tag">React</span>
+            <span class="wg-tag">TypeScript</span>
+            <span class="wg-tag">Tailwind CSS</span>
+            <span class="wg-tag">Node.js</span>
+          </div>
+          <div class="wg-stats">
+            <div class="wg-stat">
+              <div class="wg-stat__val">TS</div>
+              <div class="wg-stat__lbl">93.9%</div>
+            </div>
+            <div class="wg-stat">
+              <div class="wg-stat__val">Fast</div>
+              <div class="wg-stat__lbl" data-i18n="uiPerf">Performans</div>
+            </div>
+            <div class="wg-stat">
+              <div class="wg-stat__val">↗</div>
+              <div class="wg-stat__lbl" data-i18n="uiLiveStatus">Canlı</div>
+            </div>
+          </div>
+          <div class="wg-actions">
+            <a href="https://www.wite.com.tr/" target="_blank" rel="noopener noreferrer" class="btn-wg-primary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14">
+                <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+                <polyline points="15,3 21,3 21,9"/>
+                <line x1="10" y1="14" x2="21" y2="3"/>
+              </svg>
+              <span data-i18n="witeVisitBtn">Siteyi Ziyaret Et</span>
+            </a>
+          </div>
+        </div>
+        <div class="wg-showcase__media">
+          <div class="wg-media wg-media--static">
+            <img class="wg-media__img" src="/public/homepage/ss2.png" data-i18n-alt="witeTitle" alt="Wite Website" onerror="this.parentElement.innerHTML='<div class=wg-media__fallback><span class=wg-media__fb-icon>W</span>Wite</div>'">
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 3: Nami Landing (hover video) -->
+      <article class="wg-showcase">
+        <div class="wg-showcase__content">
+          <div class="wg-meta">
+            <span class="wg-index">03 / 04</span>
+            <span class="wg-status is-muted" data-i18n="uiStatusDev">Geliştirme Aşaması</span>
+          </div>
+          <h2 class="wg-showcase__title" data-i18n="namiLandingTitle">Nami Landing Page</h2>
+          <p class="wg-showcase__desc" data-i18n="namiLandingAboutText">
+            Nami Landing Page, Nami AI chat uygulamasını tanıtmak amacıyla geliştirilmiş modern bir web sitesidir.
+          </p>
+          <div class="wg-stack">
+            <span class="wg-tag">React</span>
+            <span class="wg-tag">Next.js</span>
+            <span class="wg-tag">TypeScript</span>
+            <span class="wg-tag">Framer Motion</span>
+            <span class="wg-tag">Tailwind CSS</span>
+          </div>
+          <div class="wg-stats">
+            <div class="wg-stat">
+              <div class="wg-stat__val">TS</div>
+              <div class="wg-stat__lbl">97.2%</div>
+            </div>
+            <div class="wg-stat">
+              <div class="wg-stat__val">SEO</div>
+              <div class="wg-stat__lbl">Optimized</div>
+            </div>
+            <div class="wg-stat">
+              <div class="wg-stat__val">i18n</div>
+              <div class="wg-stat__lbl" data-i18n="uiMultiLang">Çok Dil</div>
+            </div>
+          </div>
+          <div class="wg-actions">
+            <span class="btn-wg-disabled" data-i18n="uiSoon">Yakında</span>
+          </div>
+        </div>
+        <div class="wg-showcase__media">
+          <div class="wg-media wg-media--video" tabindex="0" role="button" aria-label="Video önizleme">
+            <img class="wg-media__poster" src="/public/homepage/ss3.png" alt="" decoding="async">
+            <video class="wg-video" muted loop playsinline preload="none">
+              <source src="/public/nami_landing/2025-09-24%2017-19-19.mp4" type="video/mp4">
+            </video>
+            <span class="wg-media__hint" data-i18n="wgVideoHint">Oynat</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 4: Nami AI (hover video) -->
+      <article class="wg-showcase">
+        <div class="wg-showcase__content">
+          <div class="wg-meta">
+            <span class="wg-index">04 / 04</span>
+            <span class="wg-status is-muted" data-i18n="uiStatusDev">Geliştirme Aşaması</span>
+          </div>
+          <h2 class="wg-showcase__title" data-i18n="namiAITitle">Nami AI Chat</h2>
+          <p class="wg-showcase__desc" data-i18n="namiAIAboutText">
+            Nami AI Chat, Firebase tabanlı web ve mobil yapay zeka sohbet uygulamasıdır.
+          </p>
+          <div class="wg-stack">
+            <span class="wg-tag">Flutter</span>
+            <span class="wg-tag">Next.js</span>
+            <span class="wg-tag">Firebase</span>
+            <span class="wg-tag">OpenAI</span>
+            <span class="wg-tag">Anthropic</span>
+            <span class="wg-tag">TypeScript</span>
+          </div>
+          <div class="wg-stats">
+            <div class="wg-stat">
+              <div class="wg-stat__val">2x</div>
+              <div class="wg-stat__lbl">AI Model</div>
+            </div>
+            <div class="wg-stat">
+              <div class="wg-stat__val">iOS</div>
+              <div class="wg-stat__lbl">+ Android</div>
+            </div>
+            <div class="wg-stat">
+              <div class="wg-stat__val">RT</div>
+              <div class="wg-stat__lbl">Realtime</div>
+            </div>
+          </div>
+          <div class="wg-actions">
+            <span class="btn-wg-disabled" data-i18n="uiSoon">Yakında</span>
+          </div>
+        </div>
+        <div class="wg-showcase__media">
+          <div class="wg-media wg-media--video" tabindex="0" role="button" aria-label="Video önizleme">
+            <img class="wg-media__poster" src="/public/homepage/ss4.png" alt="" decoding="async">
+            <video class="wg-video" muted loop playsinline preload="none">
+              <source src="/public/nami_ai/nami2.mp4" type="video/mp4">
+            </video>
+            <span class="wg-media__hint" data-i18n="wgVideoHint">Oynat</span>
+          </div>
+        </div>
+      </article>
+
+    </div><!-- /page-work -->
+
+
+    <!-- ─── ABOUT ───────────────────────────────────────────── -->
+    <div class="page" id="page-about">
+
+      <section class="about-section">
+        <div class="about-grid">
+          <div>
+            <div class="about-hero-head">
+              <div class="about-hero-avatar">
+                <img src="/public/about/enesvesika.jpeg" data-i18n-alt="aboutName" alt="Enes Faruk Gelik" onerror="this.parentElement.innerHTML='<div style=width:100%;height:100%;background:linear-gradient(135deg,#2a2a2c,#1a1a1c);display:flex;align-items:center;justify-content:center;font-family:var(--font-sidebar);font-weight:600;font-size:22px;color:rgba(255,255,255,.5)>EG</div>'">
+              </div>
+              <div>
+                <div class="about-hero-name" data-i18n="aboutName">Enes Faruk Gelik</div>
+              </div>
+            </div>
+
+            <h1 class="about-title" data-i18n="aboutMeTitle">Hakkımda</h1>
+
+            <p class="about-body" data-i18n="aboutMeText">
+              4. sınıf yazılım mühendisliği öğrencisiyim.
+            </p>
+
+            <div class="about-contact-block">
+              <div class="about-contact-row">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span data-i18n="aboutLocation">İstanbul, Türkiye</span>
+              </div>
+              <div class="about-contact-row">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <a href="mailto:enesgelik1@gmail.com" data-i18n="aboutEmail">enesgelik1@gmail.com</a>
+              </div>
+              <div class="about-contact-row">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+                <span><span data-i18n="aboutJobTitle">Stajyer Yazılım Developer</span> @ <span data-i18n="aboutCompany">Wite Bilişim</span></span>
+              </div>
+            </div>
+
+            <div class="about-skills-block">
+              <div class="about-skills-label" data-i18n="skills">Yeteneklerim</div>
+              <div class="skills-grid">
+                <div class="skill-pill">React</div>
+                <div class="skill-pill">TypeScript</div>
+                <div class="skill-pill">Node.js</div>
+                <div class="skill-pill">MySQL</div>
+                <div class="skill-pill">Tailwind</div>
+                <div class="skill-pill">Java</div>
+                <div class="skill-pill">Flutter</div>
+                <div class="skill-pill">Firebase</div>
+                <div class="skill-pill">Next.js</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="about-right-col">
+
+            <div class="about-card">
+              <div class="about-card__label" data-i18n="experience">Deneyim</div>
+              <div class="about-card__row">
+                <div class="about-card__logo">
+                  <img src="/public/about/wite.png" alt="Wite" onerror="this.parentElement.style.display='flex';this.parentElement.style.alignItems='center';this.parentElement.style.justifyContent='center';this.parentElement.innerHTML='<span style=font-family:var(--font-sidebar);font-size:14px;font-weight:600;color:rgba(255,255,255,.35)>W</span>'">
+                </div>
+                <div>
+                  <div class="about-card__title" data-i18n="aboutJobTitle">Stajyer Yazılım Developer</div>
+                  <div class="about-card__accent" data-i18n="aboutCompany">Wite Bilişim</div>
+                  <div class="about-card__meta" data-i18n="aboutJobPeriod">2025 - Günümüz</div>
+                  <div class="about-card__body" data-i18n="aboutJobDescription">Frontend ve backend teknolojileri ile modern web uygulamaları geliştirme.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="about-card">
+              <div class="about-card__label" data-i18n="education">Eğitim</div>
+              <div class="about-card__row">
+                <div class="about-card__logo about-card__logo--edu">
+                  <img src="/public/about/icon-192x192.png" alt="Altınbaş Üniversitesi" onerror="this.parentElement.innerHTML='<span style=font-family:var(--font-sidebar);font-size:13px;font-weight:600;color:rgba(255,255,255,.35)>AU</span>'">
+                </div>
+                <div>
+                  <div class="about-card__title" data-i18n="aboutEducationTitle">Yazılım Mühendisliği</div>
+                  <div class="about-card__accent" data-i18n="aboutEducationSchool">Altınbaş Üniversitesi</div>
+                  <div class="about-card__meta" data-i18n="aboutEducationPeriod">2021 - 2026</div>
+                </div>
+              </div>
+            </div>
+
+            <a href="https://github.com/EnesFarukGelik" target="_blank" rel="noopener noreferrer" class="about-github-card">
+              <div>
+                <div class="about-github-card__title" data-i18n="uiGithubCardTitle">GitHub Profilim</div>
+                <div class="about-github-card__sub" data-i18n="uiGithubCardSub">Tüm açık kaynak projeler</div>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /page-about -->
+
+  </main>
+</div>
+
+<script src="js/i18n-data.js"></script>
+<script src="js/app-i18n.js"></script>
+<script>
+  // ─── PAGE NAVIGATION ────────────────────────────────────────
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+
+    document.getElementById('page-' + id).classList.add('active');
+    document.querySelector('[data-page="' + id + '"]').classList.add('active');
+
+    // scroll to top
+    document.querySelector('.main').scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // close mobile sidebar
+    document.getElementById('sidebar').classList.remove('open');
+  }
+
+  // ─── MOBILE TOGGLE ──────────────────────────────────────────
+  document.getElementById('mobileToggle').addEventListener('click', function() {
+    document.getElementById('sidebar').classList.toggle('open');
+  });
+
+  // close sidebar on outside click
+  document.addEventListener('click', function(e) {
+    const sidebar = document.getElementById('sidebar');
+    const toggle = document.getElementById('mobileToggle');
+    if (!sidebar.contains(e.target) && !toggle.contains(e.target)) {
+      sidebar.classList.remove('open');
+    }
+  });
+
+  // ─── ANIMATE ON SCROLL (simple intersection observer) ───────
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.wg-showcase, .home-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+    el.style.transition = 'opacity .6s cubic-bezier(.16,1,.3,1), transform .6s cubic-bezier(.16,1,.3,1)';
+    observer.observe(el);
+  });
+
+  (function initWgCardVideos() {
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    document.querySelectorAll('#page-work .wg-media--video').forEach(media => {
+      const video = media.querySelector('video');
+      if (!video) return;
+      let primed = false;
+
+      function play() {
+        media.classList.add('is-playing');
+        if (!primed) {
+          primed = true;
+          video.load();
+        }
+        video.play().catch(() => {});
+      }
+      function pause() {
+        media.classList.remove('is-playing');
+        video.pause();
+        try { video.currentTime = 0; } catch {}
+      }
+
+      if (finePointer) {
+        media.addEventListener('mouseenter', play);
+        media.addEventListener('mouseleave', pause);
+      } else {
+        media.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (media.classList.contains('is-playing')) pause();
+          else play();
+        });
+      }
+
+      media.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        e.preventDefault();
+        if (media.classList.contains('is-playing')) pause();
+        else play();
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
