@@ -1,0 +1,12 @@
+{
+  "name": "enesgelik_website",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Statik portföy sitesi — build sadece i18n üretir",
+  "scripts": {
+    "build": "node scripts/build-i18n.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

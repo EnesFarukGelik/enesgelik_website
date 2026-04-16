@@ -26,4 +26,9 @@ npx serve .
 
 Tarayıcıda genelde `http://localhost:3000`.
 
-Cloudflare Pages: **Build command** boş, **output / kök** proje kökü (veya platformun statik site ayarı).
+Cloudflare Pages önerisi:
+
+- **Build command:** `npm run build` (`js/i18n-data.js` üretir)
+- **Build output directory:** `/` veya `.` (proje kökü — `index.html` burada)
+
+Repo kökünde `package.json` olmalı; yoksa Pages `npm install` aşamasında hata verir.
