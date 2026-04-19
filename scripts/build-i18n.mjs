@@ -65,6 +65,10 @@ const tr = {
   namiAISubtitle: "Yapay zeka destekli akıllı sohbet uygulaması",
   namiAIAboutText:
     "Nami AI Chat, Firebase tabanlı web ve mobil yapay zeka sohbet uygulamasıdır. Kullanıcılar, OpenAI veya Anthropic servislerinden istedikleri yapay zekayı seçerek anında konuşmaya başlayabilir. Doğal dil işleme, konuşma analizi, kişiselleştirilmiş yanıtlar ve gerçek zamanlı mesajlaşma özellikleri sunarak kullanıcı deneyimini ön planda tutar. Modern web teknolojileri ile geliştirilen Nami AI Chat, hem bireysel kullanıcılar hem de kurumsal müşteriler için kapsamlı ve esnek bir çözüm sağlar.",
+  lunataTitle: "Lunata",
+  lunataSubtitle: "Çapraz platform yaşam ve iyi oluş uygulaması",
+  lunataAboutText:
+    "Lunata, iOS ve Android üzerinde sunulan çapraz platform bir mobil uygulamadır; fitness, beslenme, eğitim, yaratıcılık, uyku ve duygusal iyi oluş gibi günlük yaşamın birden fazla boyutunu tek yerde yönetmeye yardımcı olur. Kişiselleştirilmiş içerik, hedef belirleme, hatırlatıcılar ve ilerleme takibi sunarak tutarlılık ve motivasyonu destekler.",
   uiNavSectionMain: "Navigasyon",
   uiNavSectionInfo: "Bilgi",
   uiNavWork: "Projeler",
@@ -102,6 +106,7 @@ const tr = {
   homeCardDescWite: "Modern web tasarım projesi",
   homeCardDescNamiL: "AI Chat landing page",
   homeCardDescNamiAI: "AI Chat uygulaması",
+  homeCardDescLunata: "Yaşam ve iyi oluş — tek uygulamada",
   uiLiveStatus: "Canlı",
   wgWorkKicker: "Seçilmiş işler",
   wgReelCaption: "Projelerden beş kısa kesit — 16:9 kutularda yan yana; sessiz otomatik oynatma",
@@ -169,6 +174,10 @@ const en = {
   namiAISubtitle: "AI-powered intelligent chat application",
   namiAIAboutText:
     "Nami AI Chat is a Firebase-based web and mobile artificial intelligence chat application. Users can select their preferred AI from OpenAI or Anthropic services and start chatting instantly. It prioritizes user experience by offering natural language processing, conversation analysis, personalized responses, and real-time messaging features. Nami AI Chat, developed with modern web technologies, provides a comprehensive and flexible solution for both individual users and corporate customers.",
+  lunataTitle: "Lunata",
+  lunataSubtitle: "Cross-platform life and wellness app",
+  lunataAboutText:
+    "Lunata is a cross-platform mobile application available on iOS and Android, designed to help users manage multiple aspects of daily life in one place, including fitness, nutrition, education, creativity, sleep, and emotional well-being. The app provides personalized content, goal setting, reminders, and progress tracking to support consistency and motivation.",
   uiNavSectionMain: "Navigation",
   uiNavSectionInfo: "Info",
   uiNavWork: "Projects",
@@ -207,6 +216,7 @@ const en = {
   homeCardDescWite: "Modern web design project",
   homeCardDescNamiL: "AI Chat landing page",
   homeCardDescNamiAI: "AI Chat application",
+  homeCardDescLunata: "Life & wellness in one app",
   uiLiveStatus: "Live",
   wgWorkKicker: "Selected work",
   wgReelCaption: "Five short cuts from projects — 16:9 tiles in a row; muted autoplay",
